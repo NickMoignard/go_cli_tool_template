@@ -5,7 +5,7 @@
 //
 // Committed intentionally — CI builds/tests all three. The scaffold copies only
 // ./template, so this file never leaks into a generated project.
-go 1.25
+go 1.25.0
 
 use (
 	.

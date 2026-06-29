@@ -11,3 +11,8 @@ stderr 'output'
 ! exec REPLACE_TOOL --log-level bogus
 stderr 'log-level'
 ! stdout .
+
+# An invalid log format is a usage error too.
+! exec REPLACE_TOOL --log-format xml
+stderr 'log-format'
+! stdout .

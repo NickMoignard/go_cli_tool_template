@@ -133,6 +133,28 @@ func TestRun_GlobalFlags_AllParse(t *testing.T) {
 	}
 }
 
+func TestRun_LogFormatFlag_AcceptsJSON(t *testing.T) {
+	code, _, stderr := run(t, "--log-format", "json")
+
+	if code != cli.ExitOK {
+		t.Errorf("exit code = %d, want %d (ExitOK); stderr = %q", code, cli.ExitOK, stderr)
+	}
+}
+
+func TestRun_LogFormatFlag_RejectsInvalid(t *testing.T) {
+	code, stdout, stderr := run(t, "--log-format", "xml")
+
+	if code != cli.ExitUsage {
+		t.Errorf("exit code = %d, want %d (ExitUsage)", code, cli.ExitUsage)
+	}
+	if stdout != "" {
+		t.Errorf("stdout = %q, want empty", stdout)
+	}
+	if !strings.Contains(stderr, "log-format") {
+		t.Errorf("stderr = %q, want it to name the invalid log-format", stderr)
+	}
+}
+
 func TestRun_QuietFlag_Parses(t *testing.T) {
 	code, _, stderr := run(t, "-q")
 

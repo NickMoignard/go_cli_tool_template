@@ -82,14 +82,15 @@ func internalErr(err error) error { return &internalError{err: err} }
 // Flags bind into it; downstream beads consume it (output rendering F7, logging
 // F4, config F6). Keeping it a struct gives those a single, testable source.
 type globalOptions struct {
-	Output   string // "text" | "json"
-	LogLevel string // "error" | "warn" | "info" | "debug" (base level)
-	Verbose  bool   // -v: raise effective level to at least info
-	Debug    bool   // --debug: raise effective level to debug
-	Quiet    bool   // -q: force effective level to error (and suppress progress, F5)
-	NoColor  bool   // --no-color: disable ANSI (also honors NO_COLOR / non-TTY, F4)
-	NoInput  bool   // --no-input: never prompt; assume non-interactive
-	Config   string // --config: explicit config file path (loaded in F6)
+	Output    string // "text" | "json"
+	LogLevel  string // "error" | "warn" | "info" | "debug" (base level)
+	LogFormat string // "auto" | "text" | "json"
+	Verbose   bool   // -v: raise effective level to at least info
+	Debug     bool   // --debug: raise effective level to debug
+	Quiet     bool   // -q: force effective level to error (and suppress progress, F5)
+	NoColor   bool   // --no-color: disable ANSI (also honors NO_COLOR / non-TTY, F4)
+	NoInput   bool   // --no-input: never prompt; assume non-interactive
+	Config    string // --config: explicit config file path (loaded in F6)
 }
 
 // logLevels orders levels from least to most verbose; index is the rank.
@@ -136,6 +137,11 @@ func (o *globalOptions) validate() error {
 	default:
 		return usageErrorf("invalid --log-level %q: want one of error, warn, info, debug", o.LogLevel)
 	}
+	switch o.LogFormat {
+	case "auto", "text", "json":
+	default:
+		return usageErrorf("invalid --log-format %q: want auto, text, or json", o.LogFormat)
+	}
 	return nil
 }
 
@@ -157,7 +163,16 @@ func NewRootCmd() *cobra.Command {
 		SilenceErrors: true,
 		SilenceUsage:  true,
 		PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
-			return opts.validate()
+			if err := opts.validate(); err != nil {
+				return err
+			}
+			// Build the logger from resolved flags and stash it on the command's
+			// context for subcommands to retrieve via loggerFrom. NOTE: cobra runs
+			// only the nearest PersistentPreRunE; a subcommand that defines its own
+			// must re-invoke this wiring (or leave it unset).
+			logger := opts.newLogger(cmd.ErrOrStderr())
+			cmd.SetContext(context.WithValue(cmd.Context(), loggerKey, logger))
+			return nil
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
 			// No subcommand yet: show help. F7 replaces this with real behavior.
@@ -169,6 +184,7 @@ func NewRootCmd() *cobra.Command {
 	flags := cmd.PersistentFlags()
 	flags.StringVarP(&opts.Output, "output", "o", "text", "output format: text or json")
 	flags.StringVar(&opts.LogLevel, "log-level", "warn", "log verbosity: error, warn, info, or debug")
+	flags.StringVar(&opts.LogFormat, "log-format", "auto", "log format: auto, text, or json")
 	// Registering -v for verbose before Execute makes cobra add --version without
 	// the -v shorthand (it only claims -v when free), reclaiming -v as we want.
 	flags.BoolVarP(&opts.Verbose, "verbose", "v", false, "raise log verbosity to info (alias for --log-level info)")
