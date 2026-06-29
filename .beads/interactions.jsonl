@@ -1,0 +1,1 @@
+{"id":"int-2a558d86e43dbcd7753a8bd90d034812","kind":"field_change","created_at":"2026-06-29T06:01:16.595528Z","actor":"NickMoignard","issue_id":"go_cli_tool_template-0wj","extra":{"field":"status","new_value":"closed","old_value":"in_progress","reason":"Resolved by deep-research session; outcome recorded in ADR-0004 (cobra+pflag base, fang isolated add-on, viper excluded)."}}
