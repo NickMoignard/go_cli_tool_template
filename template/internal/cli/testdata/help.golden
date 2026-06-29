@@ -2,6 +2,12 @@ REPLACE_TOOL — a CLI scaffolded from go_cli_tool_template
 
 Usage:
   REPLACE_TOOL [flags]
+  REPLACE_TOOL [command]
+
+Available Commands:
+  check       Check that inputs are non-empty and valid UTF-8 (placeholder validation)
+  completion  Generate the autocompletion script for the specified shell
+  help        Help about any command
 
 Flags:
       --config string       path to a config file
@@ -15,3 +21,5 @@ Flags:
   -q, --quiet               suppress progress and non-error logs
   -v, --verbose             raise log verbosity to info (alias for --log-level info)
       --version             version for REPLACE_TOOL
+
+Use "REPLACE_TOOL [command] --help" for more information about a command.

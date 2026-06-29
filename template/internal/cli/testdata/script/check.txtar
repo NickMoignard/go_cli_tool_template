@@ -1,0 +1,24 @@
+# A valid file passes: ok report on stdout, exit 0, nothing on stderr.
+exec REPLACE_TOOL check input.txt
+stdout 'ok'
+! stderr .
+
+# An empty file fails validation: exit non-zero, fail report on stdout, reason
+# on stderr.
+! exec REPLACE_TOOL check empty.txt
+stdout 'fail'
+stderr 'failed validation'
+
+# With no args, piped stdin is read and reported as <stdin>.
+stdin input.txt
+exec REPLACE_TOOL check
+stdout '<stdin>'
+
+# A missing file is a usage error: message on stderr, stdout clean.
+! exec REPLACE_TOOL check no-such-file.txt
+stderr 'cannot open'
+! stdout .
+
+-- input.txt --
+hello world
+-- empty.txt --

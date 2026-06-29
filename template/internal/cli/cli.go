@@ -226,6 +226,8 @@ func NewRootCmd() *cobra.Command {
 	}
 	cmd.SetVersionTemplate("{{.Name}} {{.Version}}\n")
 
+	cmd.AddCommand(newCheckCmd(opts))
+
 	flags := cmd.PersistentFlags()
 	flags.StringVarP(&opts.Output, "output", "o", "text", "output format: text or json")
 	flags.StringVar(&opts.LogLevel, "log-level", "warn", "log verbosity: error, warn, info, or debug")

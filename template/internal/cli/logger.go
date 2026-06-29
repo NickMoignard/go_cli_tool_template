@@ -40,9 +40,9 @@ func (o *globalOptions) newLogger(stderr io.Writer) *slog.Logger {
 	})
 }
 
-// isTerminal reports whether w is a terminal (so non-file writers like test
-// buffers are treated as non-TTY).
-func isTerminal(w io.Writer) bool {
-	f, ok := w.(interface{ Fd() uintptr })
+// isTerminal reports whether v (a stream like os.Stdin/os.Stderr) is a terminal.
+// Non-file streams such as test buffers lack Fd and are treated as non-TTY.
+func isTerminal(v any) bool {
+	f, ok := v.(interface{ Fd() uintptr })
 	return ok && term.IsTerminal(int(f.Fd()))
 }
