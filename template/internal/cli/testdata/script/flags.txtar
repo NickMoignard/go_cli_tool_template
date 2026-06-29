@@ -1,0 +1,13 @@
+# A valid output format is accepted (no subcommand yet, so help is shown).
+exec REPLACE_TOOL -o json
+stdout 'Usage:'
+
+# An invalid output format is a usage error reported on stderr.
+! exec REPLACE_TOOL -o xml
+stderr 'output'
+! stdout .
+
+# An invalid log level is likewise a usage error.
+! exec REPLACE_TOOL --log-level bogus
+stderr 'log-level'
+! stdout .

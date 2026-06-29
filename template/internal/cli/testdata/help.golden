@@ -4,5 +4,13 @@ Usage:
   REPLACE_TOOL [flags]
 
 Flags:
-  -h, --help      help for REPLACE_TOOL
-  -v, --version   version for REPLACE_TOOL
+      --config string      path to a config file
+      --debug              raise log verbosity to debug (alias for --log-level debug)
+  -h, --help               help for REPLACE_TOOL
+      --log-level string   log verbosity: error, warn, info, or debug (default "warn")
+      --no-color           disable colored output
+      --no-input           never prompt; run non-interactively
+  -o, --output string      output format: text or json (default "text")
+  -q, --quiet              suppress progress and non-error logs
+  -v, --verbose            raise log verbosity to info (alias for --log-level info)
+      --version            version for REPLACE_TOOL

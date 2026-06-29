@@ -75,6 +75,85 @@ func TestRun_Help_MatchesGoldenOnStdout(t *testing.T) {
 	assertGolden(t, "help.golden", stdout)
 }
 
+func TestRun_OutputFlag_AcceptsJSON(t *testing.T) {
+	code, _, stderr := run(t, "-o", "json")
+
+	if code != cli.ExitOK {
+		t.Errorf("exit code = %d, want %d (ExitOK); stderr = %q", code, cli.ExitOK, stderr)
+	}
+}
+
+func TestRun_OutputFlag_RejectsInvalidValue(t *testing.T) {
+	code, stdout, stderr := run(t, "-o", "xml")
+
+	if code != cli.ExitUsage {
+		t.Errorf("exit code = %d, want %d (ExitUsage)", code, cli.ExitUsage)
+	}
+	if stdout != "" {
+		t.Errorf("stdout = %q, want empty (validation failure renders to stderr)", stdout)
+	}
+	if !strings.Contains(stderr, "output") {
+		t.Errorf("stderr = %q, want it to name the invalid output format", stderr)
+	}
+}
+
+func TestRun_LogLevelFlag_AcceptsValidLevel(t *testing.T) {
+	code, _, stderr := run(t, "--log-level", "debug")
+
+	if code != cli.ExitOK {
+		t.Errorf("exit code = %d, want %d (ExitOK); stderr = %q", code, cli.ExitOK, stderr)
+	}
+}
+
+func TestRun_LogLevelFlag_RejectsInvalidLevel(t *testing.T) {
+	code, stdout, stderr := run(t, "--log-level", "bogus")
+
+	if code != cli.ExitUsage {
+		t.Errorf("exit code = %d, want %d (ExitUsage)", code, cli.ExitUsage)
+	}
+	if stdout != "" {
+		t.Errorf("stdout = %q, want empty", stdout)
+	}
+	if !strings.Contains(stderr, "log-level") {
+		t.Errorf("stderr = %q, want it to name the invalid log-level", stderr)
+	}
+}
+
+func TestRun_GlobalFlags_AllParse(t *testing.T) {
+	// Every global flag must at least parse. Their effects land in later beads
+	// (logging F4, config-load F6); here we only assert the flag set is complete
+	// and accepted. --config names a path but is not loaded yet, so this is fine.
+	code, _, stderr := run(t,
+		"--debug", "--no-color", "--no-input",
+		"--config", "somewhere.yaml", "-o", "json",
+	)
+
+	if code != cli.ExitOK {
+		t.Errorf("exit code = %d, want %d (ExitOK); stderr = %q", code, cli.ExitOK, stderr)
+	}
+}
+
+func TestRun_QuietFlag_Parses(t *testing.T) {
+	code, _, stderr := run(t, "-q")
+
+	if code != cli.ExitOK {
+		t.Errorf("exit code = %d, want %d (ExitOK); stderr = %q", code, cli.ExitOK, stderr)
+	}
+}
+
+func TestRun_DashV_IsVerboseNotVersion(t *testing.T) {
+	// -v is reclaimed for --verbose, so it must NOT short-circuit to the version
+	// line; with no subcommand it is accepted and the root prints help.
+	code, stdout, stderr := run(t, "-v")
+
+	if code != cli.ExitOK {
+		t.Errorf("exit code = %d, want %d (ExitOK); stderr = %q", code, cli.ExitOK, stderr)
+	}
+	if !strings.Contains(stdout, "Usage:") {
+		t.Errorf("stdout = %q; -v should be verbose (help shown), not print the version", stdout)
+	}
+}
+
 func TestRun_UnknownFlag_IsUsageErrorOnStderr(t *testing.T) {
 	code, stdout, stderr := run(t, "--nope")
 
