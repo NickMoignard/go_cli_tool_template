@@ -1,0 +1,14 @@
+// Workspace tying the three modules together for local dev + CI:
+//   .                          root module (cmd/scaffold)
+//   ./template                 the generic Template (sentinel module path)
+//   ./examples/yaml-validator  the worked example
+//
+// Committed intentionally — CI builds/tests all three. The scaffold copies only
+// ./template, so this file never leaks into a generated project.
+go 1.25
+
+use (
+	.
+	./examples/yaml-validator
+	./template
+)

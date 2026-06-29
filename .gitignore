@@ -1,4 +1,18 @@
 
+# Go
+/bin/
+/dist/
+*.exe
+*.test
+*.out
+coverage.*
+# go.work.sum is environment-specific
+go.work.sum
+# Bare binaries emitted by `go build ./...` (prefer `go build -o bin/`)
+/scaffold
+/template/REPLACE_TOOL
+/examples/yaml-validator/yamlvalidate
+
 # Beads / Dolt files (added by bd init)
 .dolt/
 *.db
