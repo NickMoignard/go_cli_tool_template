@@ -1,0 +1,7 @@
+{
+  "database": "dolt",
+  "backend": "dolt",
+  "dolt_mode": "embedded",
+  "dolt_database": "go_cli_tool_template",
+  "project_id": "28a350f0-fc2f-4b85-a0d8-18bfbaf92197"
+}
