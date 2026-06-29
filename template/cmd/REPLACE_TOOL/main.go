@@ -2,11 +2,17 @@
 //
 // REPLACE_TOOL is a SENTINEL token (ADR-0003): the scaffold renames this
 // directory and substitutes the real tool name throughout. Per ADR-0002 the
-// entrypoint stays thin — it only wires the command tree and maps results to
-// exit codes (0 valid / 1 invalid / 2 usage / >2 internal).
-//
-// This is a build placeholder. The cobra skeleton + internal/version land in
-// beads go_cli_tool_template-804 (F2); the I/O contract in -ceg (F3).
+// entrypoint stays thin — all wiring and the exit-code mapping live in
+// internal/cli so they are testable; main only passes os streams and exits.
 package main
 
-func main() {}
+import (
+	"context"
+	"os"
+
+	"github.com/OWNER/REPLACE_TOOL/internal/cli"
+)
+
+func main() {
+	os.Exit(cli.Run(context.Background(), os.Args[1:], os.Stdin, os.Stdout, os.Stderr))
+}
