@@ -1,0 +1,8 @@
+REPLACE_TOOL — a CLI scaffolded from go_cli_tool_template
+
+Usage:
+  REPLACE_TOOL [flags]
+
+Flags:
+  -h, --help      help for REPLACE_TOOL
+  -v, --version   version for REPLACE_TOOL

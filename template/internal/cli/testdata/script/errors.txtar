@@ -1,0 +1,10 @@
+# An unknown flag is a usage error: the command fails, the message goes to
+# stderr, and stdout stays clean (ADR-0002).
+! exec REPLACE_TOOL --nope
+stderr 'unknown flag'
+! stdout .
+
+# An unknown command/argument also fails with a message on stderr.
+! exec REPLACE_TOOL nope
+stderr .
+! stdout .
