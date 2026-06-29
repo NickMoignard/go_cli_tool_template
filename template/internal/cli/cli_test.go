@@ -120,12 +120,10 @@ func TestRun_LogLevelFlag_RejectsInvalidLevel(t *testing.T) {
 }
 
 func TestRun_GlobalFlags_AllParse(t *testing.T) {
-	// Every global flag must at least parse. Their effects land in later beads
-	// (logging F4, config-load F6); here we only assert the flag set is complete
-	// and accepted. --config names a path but is not loaded yet, so this is fine.
+	// Every global flag must at least parse. (--config is exercised separately by
+	// the config tests, since pointing it at a missing file is now a usage error.)
 	code, _, stderr := run(t,
-		"--debug", "--no-color", "--no-input",
-		"--config", "somewhere.yaml", "-o", "json",
+		"--debug", "--no-color", "--no-input", "-o", "json",
 	)
 
 	if code != cli.ExitOK {

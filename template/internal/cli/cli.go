@@ -19,9 +19,12 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"os"
+	"path/filepath"
 
 	"github.com/spf13/cobra"
 
+	"github.com/OWNER/REPLACE_TOOL/internal/config"
 	"github.com/OWNER/REPLACE_TOOL/internal/version"
 )
 
@@ -123,6 +126,35 @@ func (o *globalOptions) EffectiveLogLevel() string {
 	return logLevels[rank]
 }
 
+// applyConfig overlays loaded config (env > file > defaults) onto the options,
+// but only for flags the user did not explicitly set — preserving the top of the
+// precedence chain: flags > env > file > defaults.
+func (o *globalOptions) applyConfig(cfg config.Config, changed func(name string) bool) {
+	if !changed("output") {
+		o.Output = cfg.Output
+	}
+	if !changed("log-level") {
+		o.LogLevel = cfg.LogLevel
+	}
+	if !changed("log-format") {
+		o.LogFormat = cfg.LogFormat
+	}
+	if !changed("no-color") {
+		o.NoColor = cfg.NoColor
+	}
+}
+
+// configSearchDirs lists where a config file is discovered when --config is not
+// given: the current directory (project-local .<app>.yaml) and the user config
+// dir ($XDG_CONFIG_HOME/<app>/config.yaml).
+func configSearchDirs() []string {
+	dirs := []string{"."}
+	if d, err := os.UserConfigDir(); err == nil {
+		dirs = append(dirs, filepath.Join(d, binaryName))
+	}
+	return dirs
+}
+
 // validate checks the resolved flag values, returning a usageError (exit 2) for
 // any invalid combination. Called from the root PersistentPreRunE so it runs for
 // every (sub)command.
@@ -163,6 +195,19 @@ func NewRootCmd() *cobra.Command {
 		SilenceErrors: true,
 		SilenceUsage:  true,
 		PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
+			// Load config (env > file > defaults), then let explicitly-set flags
+			// win over it before validating the merged result.
+			cfg, err := config.Load(config.Source{
+				AppName:      binaryName,
+				ExplicitPath: opts.Config,
+				SearchDirs:   configSearchDirs(),
+				Environ:      os.Environ(),
+			})
+			if err != nil {
+				return usageErrorf("%v", err)
+			}
+			opts.applyConfig(cfg, cmd.Flags().Changed)
+
 			if err := opts.validate(); err != nil {
 				return err
 			}
