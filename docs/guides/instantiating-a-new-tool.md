@@ -87,6 +87,12 @@ What it does, in order:
 The exit code follows the same convention as the tools it generates: `0` success,
 `2` usage error (missing/!empty flags), `1` if generation, tidy, or git fails.
 
+The generated project is also CI- and release-ready out of the box: it ships
+`.github/workflows/ci.yml` (gofmt, `go test -race`, golangci-lint, govulncheck),
+`.github/workflows/release.yml` (the tag-driven GoReleaser pipeline — see
+[Releasing & distribution](releasing.md)), and a `.golangci.yml`. Push it to
+GitHub and CI runs immediately.
+
 ## From scaffold output to a real tool
 
 A freshly scaffolded project has a placeholder `check` command in
