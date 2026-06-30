@@ -19,9 +19,11 @@ var update = flag.Bool("update", false, "update golden files")
 // (like --help) maintainable as the command surface grows.
 //
 // Comparison ignores trailing whitespace per line: fang pads help lines to the
-// full render width, but that padding is cosmetic. Normalizing it away keeps the
-// golden stable across terminals; the pinned width still guards real wrap-point
-// differences.
+// full render width, but that padding is cosmetic — and crucially, when the
+// scaffold substitutes the tool name into a padded line, the line's length
+// changes while fang still renders to full width. Normalizing away trailing
+// whitespace keeps the golden stable across tool names; the pinned width still
+// guards real wrap-point differences.
 func assertGolden(t *testing.T, golden, actual string) {
 	t.Helper()
 	path := filepath.Join("testdata", golden)

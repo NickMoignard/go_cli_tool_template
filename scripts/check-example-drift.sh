@@ -84,15 +84,10 @@ EXCLUDES="$EXCLUDES -x help.golden"
 EXCLUDES="$EXCLUDES -x .github -x .golangci.yml -x .goreleaser.yaml"
 EXCLUDES="$EXCLUDES -x CODE_OF_CONDUCT.md -x CONTRIBUTING.md -x LICENSE -x SECURITY.md"
 
-# 3. Known, deliberate comment-only divergences ----------------------------
-# These two infra files differ from the current scaffold ONLY in code comments
-# that were intentionally reworded for the post-scaffold example in its sync
-# commits (cli_test.go in ba90dd3, execute.go in c1954a6) — no behavioural or
-# tool-name-driven difference. Excluded so the check is green, but flagged here
-# because a fresh scaffold would emit the template's wording: if you regenerate
-# the example, expect these comments to revert. Reconcile if you want byte
-# fidelity; they are not a functional drift.
-EXCLUDES="$EXCLUDES -x cli_test.go -x execute.go"
+# Note: cli_test.go and execute.go are deliberately NOT excluded — their infra
+# comments are kept byte-identical to the scaffold output, so they are compared
+# like every other infrastructure file. If you reword such a comment in the
+# template, mirror it in the example (or this check will flag the divergence).
 
 # --- diff -------------------------------------------------------------------
 set +e
