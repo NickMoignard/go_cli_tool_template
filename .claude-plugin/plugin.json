@@ -1,0 +1,11 @@
+{
+  "name": "scaffold-go-cli",
+  "description": "Scaffold a new production-grade Go CLI project from the go_cli_tool_template.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Nick Moignard"
+  },
+  "homepage": "https://github.com/NickMoignard/go_cli_tool_template",
+  "repository": "https://github.com/NickMoignard/go_cli_tool_template",
+  "license": "MIT"
+}
