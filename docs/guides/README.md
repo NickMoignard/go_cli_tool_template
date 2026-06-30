@@ -18,8 +18,9 @@ the step-by-step Skill runbook (a pending task) and from the
 - **[The test suite](testing.md)** — the three test styles every scaffolded tool
   inherits (table-driven, golden-file with `-update`, testscript E2E), the
   `Run`/`runCmd` seams, and how the exit-code contract is tested on both sides.
+- **[CI/CD for this repository](ci-cd.md)** — the multi-module workflow that
+  builds and tests the Template, scaffold, and example standalone (`GOWORK=off`),
+  the asymmetric matrix, Dependabot, and the shared lint config.
 
 New to the project? Start with the [root README](../../README.md), then
 [CONTEXT.md](../../CONTEXT.md) for vocabulary.
-
-> A CI/CD guide for the repo's own workflow is still to come (run `bd ready`).

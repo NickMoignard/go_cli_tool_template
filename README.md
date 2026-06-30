@@ -105,19 +105,20 @@ The runtime contract is documented in
 
 ## Project status
 
-Built and tested today: the Template (command tree, flags, exit codes, logging,
-progress, config, placeholder `check` command), the deterministic scaffold, the
-worked YAML-validator example, repo CI (lint/test/vuln across all modules), and a
-tag-driven [GoReleaser](https://goreleaser.com) release pipeline (archives,
-checksums, GitHub Releases, `go install`, Homebrew tap, cosign + SBOM) that ships
-with every scaffolded project.
+v1 is complete. Built, tested, and documented: the Template (command tree, global
+flags, the exit-code contract, layered config, `slog` logging, progress, and a
+placeholder `check` command) with [fang](https://github.com/charmbracelet/fang)
+styled help/errors behind a swappable seam, shell completions, and per-subcommand
+man pages; the deterministic scaffold and the `scaffold-go-cli` agent skill that
+wraps it; the worked YAML-validator example; repo CI (lint/test/vuln across all
+modules) plus a single-module CI and a tag-driven
+[GoReleaser](https://goreleaser.com) release pipeline (archives, checksums, GitHub
+Releases, `go install`, Homebrew tap, cosign + SBOM) that ship with every
+scaffolded project; community health files; and the guides under `docs/`.
 
-Not yet built (tracked as issues): optional
-[fang](https://github.com/charmbracelet/fang) styling and per-subcommand man
-pages. (Shell completions already come free from cobra's built-in `completion`
-command; the pending work adds man pages and polish.) This project uses
-**[beads](https://github.com/gastownhall/beads)** for issue tracking — run
-`bd ready` to see what's next.
+Tracked as future enhancements (run `bd ready`): a CI drift-check for the example
+and extra packaging channels (Scoop, nFPM). This project uses
+**[beads](https://github.com/gastownhall/beads)** for issue tracking.
 
 ## Contributing
 
