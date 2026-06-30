@@ -227,6 +227,7 @@ func NewRootCmd() *cobra.Command {
 	cmd.SetVersionTemplate("{{.Name}} {{.Version}}\n")
 
 	cmd.AddCommand(newCheckCmd(opts))
+	cmd.AddCommand(newManCmd())
 
 	flags := cmd.PersistentFlags()
 	flags.StringVarP(&opts.Output, "output", "o", "text", "output format: text or json")
