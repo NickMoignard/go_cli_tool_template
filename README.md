@@ -102,14 +102,17 @@ The runtime contract is documented in
 ## Project status
 
 Built and tested today: the Template (command tree, flags, exit codes, logging,
-progress, config, placeholder `check` command), the deterministic scaffold, and
-the worked YAML-validator example.
+progress, config, placeholder `check` command), the deterministic scaffold, the
+worked YAML-validator example, repo CI (lint/test/vuln across all modules), and a
+tag-driven [GoReleaser](https://goreleaser.com) release pipeline (archives,
+checksums, GitHub Releases, `go install`, Homebrew tap, cosign + SBOM) that ships
+with every scaffolded project.
 
 Not yet built (tracked as issues): the agent **Skill** (`SKILL.md`) that wraps
-the scaffold, CI/release automation, optional [fang](https://github.com/charmbracelet/fang)
-styling, per-subcommand man pages, and community health files. (Shell completions
-already come free from cobra's built-in `completion` command; the pending work
-adds man pages and polish.) This project uses
+the scaffold, optional [fang](https://github.com/charmbracelet/fang) styling,
+per-subcommand man pages, and community health files. (Shell completions already
+come free from cobra's built-in `completion` command; the pending work adds man
+pages and polish.) This project uses
 **[beads](https://github.com/gastownhall/beads)** for issue tracking — run
 `bd ready` to see what's next.
 

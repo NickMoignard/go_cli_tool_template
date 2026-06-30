@@ -11,9 +11,12 @@ the step-by-step Skill runbook (a pending task) and from the
 - **[Instantiating a new tool](instantiating-a-new-tool.md)** — what the scaffold
   does, the sentinel tokens it substitutes, its flags, and how the worked example
   turns scaffold output into a real tool.
+- **[Releasing & distribution](releasing.md)** — the tag-driven GoReleaser
+  pipeline: cross-compiled archives, checksums, GitHub Releases, `go install`, a
+  Homebrew tap, cosign signatures, and SBOMs; plus one-time maintainer setup and
+  local validation.
 
 New to the project? Start with the [root README](../../README.md), then
 [CONTEXT.md](../../CONTEXT.md) for vocabulary.
 
-> Guides for distribution/releases and CI/CD will be added once those parts of the
-> Template are built (tracked as issues — run `bd ready`).
+> A CI/CD guide for the repo's own workflow is still to come (run `bd ready`).
