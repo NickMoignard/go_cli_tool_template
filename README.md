@@ -56,6 +56,10 @@ logic and you have a real tool. See
 [docs/guides/instantiating-a-new-tool.md](docs/guides/instantiating-a-new-tool.md)
 for the full flag set and how the worked example does exactly this.
 
+Working with an agent? Invoke the **`scaffold-go-cli`** skill
+([`.agents/skills/scaffold-go-cli`](.agents/skills/scaffold-go-cli/SKILL.md)) — it
+collects these inputs and runs the scaffold for you.
+
 ## What you get out of the box
 
 The Template (and therefore every scaffolded tool) ships with:
@@ -108,11 +112,10 @@ tag-driven [GoReleaser](https://goreleaser.com) release pipeline (archives,
 checksums, GitHub Releases, `go install`, Homebrew tap, cosign + SBOM) that ships
 with every scaffolded project.
 
-Not yet built (tracked as issues): the agent **Skill** (`SKILL.md`) that wraps
-the scaffold, optional [fang](https://github.com/charmbracelet/fang) styling, and
-per-subcommand man pages. (Shell completions already come free from cobra's
-built-in `completion` command; the pending work adds man pages and polish.) This
-project uses
+Not yet built (tracked as issues): optional
+[fang](https://github.com/charmbracelet/fang) styling and per-subcommand man
+pages. (Shell completions already come free from cobra's built-in `completion`
+command; the pending work adds man pages and polish.) This project uses
 **[beads](https://github.com/gastownhall/beads)** for issue tracking — run
 `bd ready` to see what's next.
 
