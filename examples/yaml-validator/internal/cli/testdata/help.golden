@@ -1,18 +1,18 @@
 
-  yamlvalidate — validate YAML files against a JSON Schema                                                              
-         
-  USAGE  
-         
-    yamlvalidate [command] [--flags]  
-            
-  COMMANDS  
-            
+  yamlvalidate — validate YAML files against a JSON Schema
+
+  USAGE
+
+    yamlvalidate [command] [--flags]
+
+  COMMANDS
+
     completion [command]           Generate the autocompletion script for the specified shell
     help [command]                 Help about any command
     validate [files...] [--flags]  Validate YAML files against a JSON Schema
-         
-  FLAGS  
-         
+
+  FLAGS
+
     --config                       Path to a config file
     --debug                        Raise log verbosity to debug (alias for --log-level debug)
     -h --help                      Help for yamlvalidate

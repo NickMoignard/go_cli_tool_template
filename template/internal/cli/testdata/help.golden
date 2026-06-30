@@ -1,18 +1,18 @@
 
-  REPLACE_TOOL — a CLI scaffolded from go_cli_tool_template                                                             
-         
-  USAGE  
-         
-    REPLACE_TOOL [command] [--flags]  
-            
-  COMMANDS  
-            
+  REPLACE_TOOL — a CLI scaffolded from go_cli_tool_template
+
+  USAGE
+
+    REPLACE_TOOL [command] [--flags]
+
+  COMMANDS
+
     check [files...]      Check that inputs are non-empty and valid UTF-8 (placeholder validation)
     completion [command]  Generate the autocompletion script for the specified shell
     help [command]        Help about any command
-         
-  FLAGS  
-         
+
+  FLAGS
+
     --config              Path to a config file
     --debug               Raise log verbosity to debug (alias for --log-level debug)
     -h --help             Help for REPLACE_TOOL

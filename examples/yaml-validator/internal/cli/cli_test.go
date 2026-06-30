@@ -17,9 +17,15 @@ var update = flag.Bool("update", false, "update golden files")
 // assertGolden compares actual against testdata/<golden>, or rewrites it when
 // -update is passed. Golden files keep assertions on rich, multi-line output
 // (like --help) maintainable as the command surface grows.
+//
+// Comparison ignores trailing whitespace per line: fang pads help lines to the
+// full render width, but that padding is cosmetic. Normalizing it away keeps the
+// golden stable across terminals; the pinned width still guards real wrap-point
+// differences.
 func assertGolden(t *testing.T, golden, actual string) {
 	t.Helper()
 	path := filepath.Join("testdata", golden)
+	actual = trimTrailingSpace(actual)
 	if *update {
 		if err := os.MkdirAll("testdata", 0o755); err != nil {
 			t.Fatal(err)
@@ -33,9 +39,19 @@ func assertGolden(t *testing.T, golden, actual string) {
 	if err != nil {
 		t.Fatalf("reading golden %s: %v (run `go test -update` to create)", path, err)
 	}
-	if actual != string(want) {
+	if actual != trimTrailingSpace(string(want)) {
 		t.Errorf("output does not match %s:\n--- got ---\n%s\n--- want ---\n%s", path, actual, want)
 	}
+}
+
+// trimTrailingSpace strips trailing spaces and tabs from every line, leaving the
+// newlines intact. See assertGolden for why help goldens must be padding-agnostic.
+func trimTrailingSpace(s string) string {
+	lines := strings.Split(s, "\n")
+	for i, line := range lines {
+		lines[i] = strings.TrimRight(line, " \t")
+	}
+	return strings.Join(lines, "\n")
 }
 
 // run is a small helper: it executes cli.Run with buffered streams and returns
