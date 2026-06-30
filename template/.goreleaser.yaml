@@ -62,6 +62,27 @@ signs:
     artifacts: checksum
     output: true
 
+# Linux packages (.deb / .rpm) via nFPM. Built from the same binary and attached
+# to the GitHub Release — no extra tooling or secrets required. Not publishing
+# Linux packages? Delete this block.
+nfpms:
+  - id: REPLACE_TOOL
+    package_name: REPLACE_TOOL
+    # Pull in the binary built above (matches builds[].id).
+    ids:
+      - REPLACE_TOOL
+    formats:
+      - deb
+      - rpm
+    # No REPLACE_EMAIL sentinel exists; set a real maintainer address here.
+    maintainer: "REPLACE_AUTHOR <noreply@example.com>"
+    description: REPLACE_DESCRIPTION
+    homepage: "https://github.com/OWNER/REPLACE_TOOL"
+    license: MIT
+    section: utils
+    priority: optional
+    bindir: /usr/bin
+
 # Homebrew distribution via a tap (formulae are deprecated; GoReleaser now emits
 # a Cask). Create github.com/<owner>/homebrew-tap once; the release workflow
 # supplies a PAT that can push to it.
@@ -83,6 +104,23 @@ homebrew_casks:
           if system_command("/usr/bin/xattr", args: ["-h"]).exit_status == 0
             system_command "/usr/bin/xattr", args: ["-dr", "com.apple.quarantine", "#{staged_path}/REPLACE_TOOL"]
           end
+
+# Scoop (Windows) distribution via a bucket repo (uses the Windows .zip archive).
+# Create github.com/<owner>/scoop-bucket once; the release workflow supplies a PAT
+# that can push to it — same pattern as the Homebrew tap above. Not publishing to
+# Scoop? Delete this block and the SCOOP_BUCKET_GITHUB_TOKEN secret reference.
+scoops:
+  - name: REPLACE_TOOL
+    description: REPLACE_DESCRIPTION
+    homepage: "https://github.com/OWNER/REPLACE_TOOL"
+    license: MIT
+    repository:
+      owner: "{{ .Env.GITHUB_REPOSITORY_OWNER }}"
+      name: scoop-bucket
+      token: "{{ .Env.SCOOP_BUCKET_GITHUB_TOKEN }}"
+    commit_author:
+      name: goreleaserbot
+      email: goreleaserbot@users.noreply.github.com
 
 release:
   prerelease: auto

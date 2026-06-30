@@ -32,3 +32,7 @@ jobs:
           # secret. Omit this secret (and the homebrew_casks block in
           # .goreleaser.yaml) if you do not publish a Homebrew tap.
           HOMEBREW_TAP_GITHUB_TOKEN: ${{ secrets.HOMEBREW_TAP_GITHUB_TOKEN }}
+          # A PAT with contents:write on <owner>/scoop-bucket, stored as a repo
+          # secret. Omit this secret (and the scoops block in .goreleaser.yaml) if
+          # you do not publish a Scoop bucket. nFPM (.deb/.rpm) needs no secret.
+          SCOOP_BUCKET_GITHUB_TOKEN: ${{ secrets.SCOOP_BUCKET_GITHUB_TOKEN }}
