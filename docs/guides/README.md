@@ -15,6 +15,9 @@ the step-by-step Skill runbook (a pending task) and from the
   pipeline: cross-compiled archives, checksums, GitHub Releases, `go install`, a
   Homebrew tap, cosign signatures, and SBOMs; plus one-time maintainer setup and
   local validation.
+- **[The test suite](testing.md)** — the three test styles every scaffolded tool
+  inherits (table-driven, golden-file with `-update`, testscript E2E), the
+  `Run`/`runCmd` seams, and how the exit-code contract is tested on both sides.
 
 New to the project? Start with the [root README](../../README.md), then
 [CONTEXT.md](../../CONTEXT.md) for vocabulary.
