@@ -258,12 +258,12 @@ func runCmd(ctx context.Context, root *cobra.Command, args []string, stdin io.Re
 	root.SetOut(stdout)
 	root.SetErr(stderr)
 
-	err := root.ExecuteContext(ctx)
+	// execute (the fang/cobra seam) runs the command and renders any error to
+	// stderr; runCmd only maps that error to an exit code.
+	err := execute(ctx, root)
 	if err == nil {
 		return ExitOK
 	}
-
-	fmt.Fprintln(stderr, "error:", err)
 
 	var coded CodedError
 	if errors.As(err, &coded) {

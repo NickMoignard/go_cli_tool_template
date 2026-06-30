@@ -94,7 +94,7 @@ func TestCheckCmd_MissingFile_ExitUsage(t *testing.T) {
 	if stdout != "" {
 		t.Errorf("stdout = %q, want empty", stdout)
 	}
-	if !strings.Contains(stderr, "cannot open") {
+	if !strings.Contains(stderr, "Cannot open") {
 		t.Errorf("stderr = %q, want it to report the open failure", stderr)
 	}
 }

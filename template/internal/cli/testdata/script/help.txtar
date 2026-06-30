@@ -1,9 +1,9 @@
 # With no arguments the tool prints help to stdout and exits 0.
 exec REPLACE_TOOL
-stdout 'Usage:'
+stdout 'USAGE'
 ! stderr .
 
 # --help is the same, explicitly requested.
 exec REPLACE_TOOL --help
-stdout 'Usage:'
+stdout 'USAGE'
 ! stderr .

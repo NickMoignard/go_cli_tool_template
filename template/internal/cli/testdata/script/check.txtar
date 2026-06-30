@@ -16,7 +16,7 @@ stdout '<stdin>'
 
 # A missing file is a usage error: message on stderr, stdout clean.
 ! exec REPLACE_TOOL check no-such-file.txt
-stderr 'cannot open'
+stderr 'Cannot open'
 ! stdout .
 
 -- input.txt --

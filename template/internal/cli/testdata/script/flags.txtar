@@ -1,6 +1,6 @@
 # A valid output format is accepted (no subcommand yet, so help is shown).
 exec REPLACE_TOOL -o json
-stdout 'Usage:'
+stdout 'USAGE'
 
 # An invalid output format is a usage error reported on stderr.
 ! exec REPLACE_TOOL -o xml
