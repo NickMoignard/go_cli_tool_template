@@ -33,6 +33,13 @@ If you change flags or commands, regenerate the help golden file:
 $ (cd template && GOWORK=off go test ./internal/cli/ -run TestRun_Help -update)
 ```
 
+If you change the Template's files or the scaffold's substitution, regenerate the
+scaffold output goldens (they lock the generated tree's shape and key files):
+
+```console
+$ go test ./internal/scaffold/ -run TestGenerate_Golden -update
+```
+
 ## Issue tracking
 
 This project tracks work with **[beads](https://github.com/gastownhall/beads)**
