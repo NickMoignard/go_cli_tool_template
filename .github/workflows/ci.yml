@@ -98,3 +98,18 @@ jobs:
         run: |
           go install golang.org/x/vuln/cmd/govulncheck@latest
           ( cd "${{ matrix.module }}" && govulncheck ./... )
+
+  example-drift:
+    # Re-scaffold template/ and diff its non-domain files against the committed
+    # examples/yaml-validator/ so the worked example can't silently drift from
+    # what the scaffold now produces. See docs/guides/ci-cd.md for how to fix a
+    # failure.
+    name: example-drift
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: stable
+      - name: check example drift
+        run: sh scripts/check-example-drift.sh
