@@ -57,8 +57,43 @@ logic and you have a real tool. See
 for the full flag set and how the worked example does exactly this.
 
 Working with an agent? Invoke the **`scaffold-go-cli`** skill
-([`.agents/skills/scaffold-go-cli`](.agents/skills/scaffold-go-cli/SKILL.md)) — it
-collects these inputs and runs the scaffold for you.
+([`skills/scaffold-go-cli`](skills/scaffold-go-cli/SKILL.md)) — it
+collects these inputs and runs the scaffold for you. See
+[Installing the scaffold-go-cli skill](#installing-the-scaffold-go-cli-skill)
+below.
+
+## Installing the scaffold-go-cli skill
+
+The skill lives at [`skills/scaffold-go-cli/SKILL.md`](skills/scaffold-go-cli/SKILL.md).
+Install it into your agent however you prefer:
+
+**npx skills (recommended, agent-agnostic).** Auto-discovers the top-level
+`skills/` dir and places the skill in the right location (`~/.claude/skills`,
+etc.):
+
+```console
+$ npx skills add NickMoignard/go_cli_tool_template
+```
+
+If you need to disambiguate, scope it explicitly with
+`npx skills add NickMoignard/go_cli_tool_template --skill scaffold-go-cli`.
+
+**curl | sh (no npm required).** Installs `SKILL.md` into
+`${CLAUDE_SKILLS_DIR:-$HOME/.claude/skills}/scaffold-go-cli`:
+
+```console
+$ curl -fsSL https://raw.githubusercontent.com/NickMoignard/go_cli_tool_template/master/install.sh | sh
+```
+
+From a local clone the same script copies the in-repo `SKILL.md` instead of
+downloading it:
+
+```console
+$ sh install.sh
+```
+
+**Claude Code plugin.** Claude Code users can also install via
+`claude plugin marketplace add NickMoignard/go_cli_tool_template`.
 
 ## What you get out of the box
 

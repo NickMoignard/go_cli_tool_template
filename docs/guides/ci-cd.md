@@ -27,10 +27,43 @@ cheaper build-smoke elsewhere:
 | `build` | macOS + Windows | `go build ./...` per module (compile-smoke on the other platforms) |
 | `lint` | ubuntu (matrix per module) | `golangci-lint` (v2, pinned) |
 | `govulncheck` | ubuntu (matrix per module) | `govulncheck ./...` on the latest stable toolchain |
+| `example-drift` | ubuntu | re-scaffolds `template/` and diffs the non-domain files against `examples/yaml-validator/` |
 
 A note on `govulncheck`: it only fails on a **called** vulnerability. Standard-
 library advisories are resolved by CI's patched `stable` toolchain, so the job
 stays green unless a real, reachable issue appears in your code or deps.
+
+## Keeping the example honest: `example-drift`
+
+`examples/yaml-validator/` is a hand-maintained instantiation of `template/` — the
+scaffold output, then extended with the YAML-validation domain. As the Template
+evolves, the example's **infrastructure** files (config, logging, progress,
+version, the CLI plumbing, the shared txtar scripts) can silently fall behind what
+a fresh scaffold would now emit. The `example-drift` job guards against that.
+
+It runs [`scripts/check-example-drift.sh`](../../scripts/check-example-drift.sh),
+which re-scaffolds `template/` into a temp dir with the example's exact identity
+parameters (`-module github.com/NickMoignard/yamlvalidate -name yamlvalidate
+-skip-git -skip-tidy`) and `diff -r`s the result against the committed example.
+The diff **excludes the files the example legitimately owns as domain** — the
+`validate` command and its tests/testdata, the rewritten `README.md`,
+`go.mod`/`go.sum`, and the community/release/CI files the example deliberately
+drops — so only genuine infrastructure divergence trips it. The exclude set lives
+in the script, each entry commented with why it's domain.
+
+Run it locally exactly as CI does:
+
+```console
+$ sh scripts/check-example-drift.sh
+```
+
+**Fixing a failure.** The output names every drifted file. For each one, decide:
+
+- *The Template changed and the example should follow* (the usual case): port the
+  change into `examples/yaml-validator/`, or regenerate the file from the current
+  `template/`, then re-run the script until it's green.
+- *The file became genuinely domain-specific*: add its basename to the `EXCLUDES`
+  list in the script with a one-line comment justifying why the example owns it.
 
 ## Dependabot: `.github/dependabot.yml`
 

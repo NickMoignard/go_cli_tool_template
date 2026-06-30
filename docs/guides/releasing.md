@@ -23,7 +23,10 @@ GoReleaser then, in one run:
 - publishes a **GitHub Release** with those assets;
 - generates an **SBOM** per archive (via syft) and a keyless **cosign** signature
   over the checksums (via the workflow's OIDC token — no private key to manage);
-- updates a **Homebrew tap** with a cask for the new version.
+- builds **Linux packages** (`.deb` and `.rpm`, via nFPM) and attaches them to the
+  release;
+- updates a **Homebrew tap** with a cask and a **Scoop bucket** with a manifest for
+  the new version.
 
 `go install` needs nothing extra — it works the moment the tag exists, because it
 builds from source at the tag.
@@ -48,11 +51,33 @@ back to the VCS stamps Go records in the build info.
 | Push the repo to GitHub | the workflow and release live there |
 | Create a `homebrew-tap` repo under your account | GoReleaser pushes the cask there |
 | Add a `HOMEBREW_TAP_GITHUB_TOKEN` repo secret | a PAT with `contents:write` on the tap (the default `GITHUB_TOKEN` cannot push to another repo) |
+| Create a `scoop-bucket` repo under your account | GoReleaser pushes the Scoop manifest there |
+| Add a `SCOOP_BUCKET_GITHUB_TOKEN` repo secret | a PAT with `contents:write` on the bucket (same reason as the tap) |
 
 The release owner (`{{ .Env.GITHUB_REPOSITORY_OWNER }}` in the config) is filled
 in automatically from the Actions context. Not publishing a tap? Delete the
 `homebrew_casks:` block in `.goreleaser.yaml` and the secret reference in the
 workflow — everything else still works.
+
+### Linux packages (`.deb` / `.rpm`) and Scoop
+
+Two extra channels ride along on the same tag-driven run:
+
+- **Linux packages** — the `nfpms:` block builds a `.deb` and a `.rpm` from the
+  already-compiled binary and attaches them to the GitHub Release. This needs **no
+  extra repo, token, or secret** — the only field to fill in is a real `maintainer`
+  email in the block (the `.deb` format requires one; the template ships a
+  placeholder). The packages are not signed; install with your distro's tooling
+  (`dpkg -i` / `rpm -i`) or point a repo at the release assets.
+- **Scoop (Windows)** — the `scoops:` block pushes a manifest to a `scoop-bucket`
+  repo, exactly mirroring the Homebrew tap: create the repo once and add the
+  `SCOOP_BUCKET_GITHUB_TOKEN` PAT secret (rows above). Users then
+  `scoop bucket add <owner> https://github.com/<owner>/scoop-bucket` and
+  `scoop install REPLACE_TOOL`.
+
+Disabling either is the same one-block delete as the tap: drop `nfpms:` (no secret
+to remove) or `scoops:` (and its `SCOOP_BUCKET_GITHUB_TOKEN` reference) from
+`.goreleaser.yaml`. The rest of the pipeline is unaffected.
 
 ## Validate locally before tagging
 
@@ -68,9 +93,8 @@ touching GitHub, so you can confirm cross-compilation and packaging work.
 
 ## Channels & scope
 
-Shipped: **GitHub Releases**, **`go install`**, **Homebrew tap**, **cosign
-signatures**, and **SBOMs**. Deliberately out of scope for now: container images
-(dropped) and Scoop / nFPM (`.deb`/`.rpm`) packaging (tracked as separate, lower
--priority issues — run `bd ready`). See
+Shipped: **GitHub Releases**, **`go install`**, **Homebrew tap**, **Scoop bucket**,
+**nFPM (`.deb`/`.rpm`) packages**, **cosign signatures**, and **SBOMs**.
+Deliberately out of scope for now: container images (dropped). See
 [ADR-0004](../adr/0004-cli-framework-cobra-fang.md) for the framework/versioning
 decisions the release config builds on.
