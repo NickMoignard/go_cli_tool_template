@@ -1,0 +1,9 @@
+# With no arguments the tool prints help to stdout and exits 0.
+exec yamlvalidate
+stdout 'Usage:'
+! stderr .
+
+# --help is the same, explicitly requested.
+exec yamlvalidate --help
+stdout 'Usage:'
+! stderr .

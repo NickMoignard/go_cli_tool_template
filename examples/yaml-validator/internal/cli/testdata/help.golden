@@ -1,0 +1,25 @@
+yamlvalidate — validate YAML files against a JSON Schema
+
+Usage:
+  yamlvalidate [flags]
+  yamlvalidate [command]
+
+Available Commands:
+  completion  Generate the autocompletion script for the specified shell
+  help        Help about any command
+  validate    Validate YAML files against a JSON Schema
+
+Flags:
+      --config string       path to a config file
+      --debug               raise log verbosity to debug (alias for --log-level debug)
+  -h, --help                help for yamlvalidate
+      --log-format string   log format: auto, text, or json (default "auto")
+      --log-level string    log verbosity: error, warn, info, or debug (default "warn")
+      --no-color            disable colored output
+      --no-input            never prompt; run non-interactively
+  -o, --output string       output format: text or json (default "text")
+  -q, --quiet               suppress progress and non-error logs
+  -v, --verbose             raise log verbosity to info (alias for --log-level info)
+      --version             version for yamlvalidate
+
+Use "yamlvalidate [command] --help" for more information about a command.

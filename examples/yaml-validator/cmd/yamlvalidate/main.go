@@ -1,9 +1,18 @@
-// Command yamlvalidate validates YAML files against a JSON Schema — the worked
-// example demonstrating the Template instantiated into a real tool.
+// Command yamlvalidate is the generated CLI's entrypoint.
 //
-// This is a build placeholder. Full implementation (santhosh-tekuri/jsonschema,
-// the validate subcommand, structured violation output) is tracked in beads
-// issue go_cli_tool_template-ydz (F13).
+// yamlvalidate is a SENTINEL token (ADR-0003): the scaffold renames this
+// directory and substitutes the real tool name throughout. Per ADR-0002 the
+// entrypoint stays thin — all wiring and the exit-code mapping live in
+// internal/cli so they are testable; main only passes os streams and exits.
 package main
 
-func main() {}
+import (
+	"context"
+	"os"
+
+	"github.com/NickMoignard/yamlvalidate/internal/cli"
+)
+
+func main() {
+	os.Exit(cli.Run(context.Background(), os.Args[1:], os.Stdin, os.Stdout, os.Stderr))
+}

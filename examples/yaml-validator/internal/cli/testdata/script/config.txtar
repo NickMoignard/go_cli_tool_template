@@ -1,0 +1,12 @@
+# An explicit --config naming a missing file is a usage error.
+! exec yamlvalidate --config missing.yaml
+stderr 'config'
+! stdout .
+
+# A malformed config file discovered in the working dir is a usage error.
+! exec yamlvalidate
+stderr 'config'
+! stdout .
+
+-- .yamlvalidate.yaml --
+output: [unclosed

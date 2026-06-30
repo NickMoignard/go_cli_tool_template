@@ -1,0 +1,4 @@
+# --version prints the version to stdout and writes nothing to stderr.
+exec yamlvalidate --version
+stdout 'yamlvalidate'
+! stderr .

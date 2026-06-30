@@ -1,0 +1,18 @@
+# A valid output format is accepted (no subcommand yet, so help is shown).
+exec yamlvalidate -o json
+stdout 'Usage:'
+
+# An invalid output format is a usage error reported on stderr.
+! exec yamlvalidate -o xml
+stderr 'output'
+! stdout .
+
+# An invalid log level is likewise a usage error.
+! exec yamlvalidate --log-level bogus
+stderr 'log-level'
+! stdout .
+
+# An invalid log format is a usage error too.
+! exec yamlvalidate --log-format xml
+stderr 'log-format'
+! stdout .

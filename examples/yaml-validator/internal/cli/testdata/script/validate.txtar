@@ -1,0 +1,44 @@
+# A conforming document passes: ok report on stdout, exit 0, nothing on stderr.
+exec yamlvalidate validate --schema schema.json good.yaml
+stdout 'ok'
+! stderr .
+
+# A non-conforming document fails validation: exit non-zero, fail report and the
+# offending path on stdout, reason on stderr.
+! exec yamlvalidate validate -s schema.json bad.yaml
+stdout 'fail'
+stdout '/port'
+stderr 'failed validation'
+
+# With no positional args, piped stdin is read and reported as <stdin>.
+stdin good.yaml
+exec yamlvalidate validate --schema schema.json
+stdout '<stdin>'
+
+# A missing schema is a usage error: message on stderr, stdout clean.
+! exec yamlvalidate validate --schema no-such-schema.json good.yaml
+stderr 'compile|open|no such'
+! stdout .
+
+# Omitting --schema is a usage error too.
+! exec yamlvalidate validate good.yaml
+stderr 'schema'
+! stdout .
+
+-- schema.json --
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": ["name", "port"],
+  "properties": {
+    "name": { "type": "string" },
+    "port": { "type": "integer", "minimum": 1, "maximum": 65535 }
+  },
+  "additionalProperties": false
+}
+-- good.yaml --
+name: web
+port: 8080
+-- bad.yaml --
+name: web
+port: 99999
