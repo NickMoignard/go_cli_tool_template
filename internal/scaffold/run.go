@@ -31,6 +31,7 @@ func Run(args []string, stdout, stderr io.Writer) int {
 		author   = fs.String("author", "", "copyright holder for community files")
 		year     = fs.String("year", "", "copyright year (defaults to the current year)")
 		desc     = fs.String("description", "", "one-line tool description")
+		email    = fs.String("email", "", "contact/maintainer email for community + release files")
 		skipTidy = fs.Bool("skip-tidy", false, "do not run `go mod tidy` in the generated project")
 		skipGit  = fs.Bool("skip-git", false, "do not run `git init` in the generated project")
 	)
@@ -68,6 +69,7 @@ func Run(args []string, stdout, stderr io.Writer) int {
 		Author:      *author,
 		Year:        resolvedYear,
 		Description: *desc,
+		Email:       *email,
 	}
 
 	if err := Generate(spec); err != nil {

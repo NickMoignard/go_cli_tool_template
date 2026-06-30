@@ -46,6 +46,7 @@ $ go run ./cmd/scaffold \
     -module github.com/you/my-tool \
     -name   my-tool \
     -author "Your Name" \
+    -email  "you@example.com" \
     -description "What my-tool does"
 $ cd ../my-tool && go test ./...
 ```

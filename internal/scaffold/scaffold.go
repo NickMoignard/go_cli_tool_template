@@ -20,6 +20,7 @@ type Spec struct {
 	Author      string // copyright holder for community files
 	Year        string // copyright year
 	Description string // one-line tool description
+	Email       string // contact/maintainer email for community + release files
 }
 
 // Generate copies the template tree at s.Source into s.Dest, substituting sentinel

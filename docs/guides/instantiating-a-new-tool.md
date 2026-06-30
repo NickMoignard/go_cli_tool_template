@@ -35,9 +35,10 @@ finds and replaces. The token set is the single source of truth (defined in
 |----------|---------------|--------|
 | `github.com/OWNER/REPLACE_TOOL` | your module path (`-module`) | live |
 | `REPLACE_TOOL` | your tool/binary name (`-name`) | live |
-| `REPLACE_AUTHOR` | copyright holder (`-author`) | reserved |
-| `REPLACE_YEAR` | copyright year (`-year`, defaults to current) | reserved |
-| `REPLACE_DESCRIPTION` | one-line description (`-description`) | reserved |
+| `REPLACE_AUTHOR` | copyright holder (`-author`) | live |
+| `REPLACE_YEAR` | copyright year (`-year`, defaults to current) | live |
+| `REPLACE_DESCRIPTION` | one-line description (`-description`) | live |
+| `REPLACE_EMAIL` | contact/maintainer email (`-email`) | live |
 
 The module-path sentinel **embeds** the tool-name sentinel, so substitutions are
 applied longest-first — the module path is rewritten before the bare name, or it
@@ -58,6 +59,7 @@ $ go run ./cmd/scaffold \
     -module      github.com/you/my-tool \
     -name        my-tool \
     -author      "Your Name" \
+    -email       "you@example.com" \
     -description "What my-tool does"
 ```
 
@@ -70,6 +72,7 @@ Flags:
 | `-name` | ✅ | — | tool/binary name |
 | `-source` | | `template` | the Template directory to copy from |
 | `-author` | | — | copyright holder |
+| `-email` | | — | contact/maintainer email (SECURITY, CODE_OF_CONDUCT, nFPM maintainer) |
 | `-year` | | current year | copyright year |
 | `-description` | | — | one-line description |
 | `-skip-tidy` | | off | do not run `go mod tidy` in the new project |

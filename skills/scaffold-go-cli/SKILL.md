@@ -27,6 +27,7 @@ Gather and confirm with the human:
   path** (step 2 runs from a cache dir, so a relative `-dest` would resolve there, not
   in the human's project). (required)
 - **author** — copyright holder for LICENSE/README
+- **email** — contact/maintainer email (SECURITY.md, CODE_OF_CONDUCT.md, and the nFPM package maintainer)
 - **description** — one line describing the tool
 - **year** — defaults to the current year
 
@@ -76,6 +77,7 @@ $ ( cd "$REPO" && go run ./cmd/scaffold \
       -module "<module path>" \
       -name "<tool name>" \
       -author "<author>" \
+      -email "<email>" \
       -description "<description>" )
 ```
 
@@ -83,7 +85,7 @@ With a `scaffold` binary (A), the same flags apply, run from anywhere:
 
 ```console
 $ scaffold -dest "<absolute destination>" -module "<module path>" -name "<tool name>" \
-      -author "<author>" -description "<description>"
+      -author "<author>" -email "<email>" -description "<description>"
 ```
 
 Then read the exit code:

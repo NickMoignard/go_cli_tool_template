@@ -74,8 +74,7 @@ nfpms:
     formats:
       - deb
       - rpm
-    # No REPLACE_EMAIL sentinel exists; set a real maintainer address here.
-    maintainer: "REPLACE_AUTHOR <noreply@example.com>"
+    maintainer: "REPLACE_AUTHOR <REPLACE_EMAIL>"
     description: REPLACE_DESCRIPTION
     homepage: "https://github.com/OWNER/REPLACE_TOOL"
     license: MIT

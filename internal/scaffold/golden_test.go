@@ -26,6 +26,7 @@ func goldenSpec(t *testing.T, dest string) scaffold.Spec {
 		Author:      "Example Author",
 		Year:        "2026",
 		Description: "An example CLI.",
+		Email:       "maintainer@example.com",
 	}
 }
 
@@ -60,15 +61,16 @@ func TestGenerate_Golden_Manifest(t *testing.T) {
 }
 
 // TestGenerate_Golden_KeyFiles locks the exact substituted content of the files
-// where token replacement is load-bearing — together they exercise all five
-// sentinels (module, name, author, year, description).
+// where token replacement is load-bearing — together they exercise all six
+// sentinels (module, name, author, year, description, email — the last via
+// SECURITY.md's maintainer contact).
 func TestGenerate_Golden_KeyFiles(t *testing.T) {
 	dest := filepath.Join(t.TempDir(), "widget")
 	if err := scaffold.Generate(goldenSpec(t, dest)); err != nil {
 		t.Fatalf("Generate: %v", err)
 	}
 
-	for _, rel := range []string{"go.mod", "cmd/widget/main.go", "LICENSE", "README.md"} {
+	for _, rel := range []string{"go.mod", "cmd/widget/main.go", "LICENSE", "README.md", "SECURITY.md"} {
 		golden := "keyfiles/" + strings.ReplaceAll(rel, "/", "_") + ".golden"
 		assertGolden(t, golden, read(t, filepath.Join(dest, filepath.FromSlash(rel))))
 	}

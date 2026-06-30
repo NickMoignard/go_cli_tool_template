@@ -5,16 +5,17 @@ import "strings"
 // Sentinel tokens (ADR-0003): collision-free placeholder strings seeded into the
 // Template that the scaffold find-and-replaces during instantiation. This block is
 // the single source of truth for the token contract — files in template/ (and the
-// community files added later) must use exactly these strings, and the scaffold
-// substitutes them here. Module path and tool name are live today; the author,
-// year, and description sentinels are reserved for the LICENSE/README that the
-// community-files work seeds, so they are harmless no-ops until then.
+// community files) must use exactly these strings, and the scaffold substitutes
+// them here. Module path and tool name drive the code; author, year, description,
+// and email feed the community/release files (LICENSE, README, CODE_OF_CONDUCT,
+// SECURITY, the nFPM maintainer), so they are harmless no-ops where unused.
 const (
 	sentinelModule      = "github.com/OWNER/REPLACE_TOOL"
 	sentinelName        = "REPLACE_TOOL"
 	sentinelAuthor      = "REPLACE_AUTHOR"
 	sentinelYear        = "REPLACE_YEAR"
 	sentinelDescription = "REPLACE_DESCRIPTION"
+	sentinelEmail       = "REPLACE_EMAIL"
 )
 
 // replacement is a single literal find/replace pair.
@@ -33,6 +34,7 @@ func (s Spec) replacements() []replacement {
 		{sentinelAuthor, s.Author},
 		{sentinelYear, s.Year},
 		{sentinelDescription, s.Description},
+		{sentinelEmail, s.Email},
 	}
 }
 

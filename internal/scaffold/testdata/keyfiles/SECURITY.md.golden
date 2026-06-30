@@ -5,15 +5,15 @@
 Please **do not** report security vulnerabilities through public GitHub issues.
 
 Instead, report them privately via GitHub's
-[private vulnerability reporting](https://github.com/OWNER/REPLACE_TOOL/security/advisories/new)
+[private vulnerability reporting](https://github.com/example/widget/security/advisories/new)
 (Security → Advisories → Report a vulnerability), or by emailing the
-maintainers at REPLACE_EMAIL.
+maintainers at maintainer@example.com.
 
 Please include:
 
 - a description of the vulnerability and its impact,
 - the steps to reproduce it, and
-- the affected version (`REPLACE_TOOL --version`).
+- the affected version (`widget --version`).
 
 You can expect an initial response within a few days. We will keep you informed
 as we work on a fix and will credit you in the release notes unless you prefer to
