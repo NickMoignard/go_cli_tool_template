@@ -13,13 +13,15 @@ import (
 
 // TestMain lets testscript re-invoke this binary in-process as the command
 // "REPLACE_TOOL", so .txtar scripts exercise the real CLI end-to-end (real
-// streams, real exit status) rather than calling cli.Run directly.
+// streams, real exit status) rather than calling cli.Run directly. Main never
+// returns — it runs the test binary and exits — so each command os.Exits with
+// the real code its run produced.
 func TestMain(m *testing.M) {
-	os.Exit(testscript.RunMain(m, map[string]func() int{
-		"REPLACE_TOOL": func() int {
-			return cli.Run(context.Background(), os.Args[1:], os.Stdin, os.Stdout, os.Stderr)
+	testscript.Main(m, map[string]func(){
+		"REPLACE_TOOL": func() {
+			os.Exit(cli.Run(context.Background(), os.Args[1:], os.Stdin, os.Stdout, os.Stderr))
 		},
-	}))
+	})
 }
 
 // TestScripts runs every testdata/script/*.txtar end-to-end. testscript asserts

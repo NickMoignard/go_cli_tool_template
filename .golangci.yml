@@ -1,0 +1,15 @@
+# golangci-lint configuration for the whole repo. It is discovered from each
+# module directory (golangci-lint walks up to find it), so the root module,
+# template/, and examples/yaml-validator/ are all linted with the same rules.
+#
+# The default linter set (errcheck, govet, ineffassign, staticcheck, unused) is
+# kept deliberately conservative for a template — opinionated linters would fight
+# generated code. The std-error-handling exclusion preset drops the noise from
+# unchecked fmt.Fprint*/Write/Close calls to streams, which are idiomatic to
+# ignore.
+version: "2"
+
+linters:
+  exclusions:
+    presets:
+      - std-error-handling

@@ -1,0 +1,100 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+
+permissions:
+  contents: read
+
+# Each module is built and tested standalone (GOWORK=off), exactly as it is
+# consumed: the scaffold copies template/ out of the workspace, and a generated
+# project has no go.work. CI verifying the standalone property is the point.
+env:
+  GOWORK: "off"
+
+jobs:
+  test:
+    name: test (go ${{ matrix.go }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # latest + previous Go (asymmetric matrix: full tests run on Linux only).
+        go: [stable, oldstable]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: ${{ matrix.go }}
+      - name: gofmt
+        run: |
+          unformatted=$(gofmt -l .)
+          if [ -n "$unformatted" ]; then
+            echo "These files are not gofmt-ed:"; echo "$unformatted"; exit 1
+          fi
+      - name: test (race + coverage)
+        run: |
+          for dir in . template examples/yaml-validator; do
+            echo "::group::test $dir"
+            ( cd "$dir" && go test -race -covermode=atomic -coverprofile=coverage.out ./... \
+              && go tool cover -func=coverage.out | tail -1 )
+            echo "::endgroup::"
+          done
+
+  build:
+    name: build (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        # Build-smoke only on the other platforms; the test job covers Linux.
+        os: [macos-latest, windows-latest]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: stable
+      - name: build
+        shell: bash
+        run: |
+          for dir in . template examples/yaml-validator; do
+            echo "::group::build $dir"
+            ( cd "$dir" && go build ./... )
+            echo "::endgroup::"
+          done
+
+  lint:
+    name: golangci-lint (${{ matrix.module }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        module: [".", "template", "examples/yaml-validator"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: stable
+      - uses: golangci/golangci-lint-action@v7
+        with:
+          version: v2.11.4
+          working-directory: ${{ matrix.module }}
+
+  govulncheck:
+    name: govulncheck (${{ matrix.module }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        module: [".", "template", "examples/yaml-validator"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: stable
+      - name: govulncheck
+        run: |
+          go install golang.org/x/vuln/cmd/govulncheck@latest
+          ( cd "${{ matrix.module }}" && govulncheck ./... )

@@ -1,0 +1,35 @@
+version: 2
+updates:
+  # Go modules — one entry per module in the workspace, since Dependabot tracks
+  # each go.mod independently. template/ is kept fresh too so the scaffold emits
+  # up-to-date dependency versions.
+  - package-ecosystem: gomod
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      go-modules:
+        patterns: ["*"]
+  - package-ecosystem: gomod
+    directory: /template
+    schedule:
+      interval: weekly
+    groups:
+      go-modules:
+        patterns: ["*"]
+  - package-ecosystem: gomod
+    directory: /examples/yaml-validator
+    schedule:
+      interval: weekly
+    groups:
+      go-modules:
+        patterns: ["*"]
+
+  # GitHub Actions used by the workflows.
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      actions:
+        patterns: ["*"]
