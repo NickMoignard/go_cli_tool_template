@@ -64,6 +64,11 @@ func TestRun_Version_WritesVersionToStdout(t *testing.T) {
 }
 
 func TestRun_Help_MatchesGoldenOnStdout(t *testing.T) {
+	// Fang renders styled help; pin its width and disable color so the golden is
+	// deterministic regardless of the terminal running the tests.
+	t.Setenv("__FANG_TEST_WIDTH", "120")
+	t.Setenv("NO_COLOR", "1")
+
 	code, stdout, stderr := run(t, "--help")
 
 	if code != cli.ExitOK {
@@ -169,7 +174,7 @@ func TestRun_DashV_IsVerboseNotVersion(t *testing.T) {
 	if code != cli.ExitOK {
 		t.Errorf("exit code = %d, want %d (ExitOK); stderr = %q", code, cli.ExitOK, stderr)
 	}
-	if !strings.Contains(stdout, "Usage:") {
+	if !strings.Contains(stdout, "USAGE") {
 		t.Errorf("stdout = %q; -v should be verbose (help shown), not print the version", stdout)
 	}
 }
@@ -183,7 +188,7 @@ func TestRun_UnknownFlag_IsUsageErrorOnStderr(t *testing.T) {
 	if stdout != "" {
 		t.Errorf("stdout = %q, want empty (errors go to stderr, ADR-0002)", stdout)
 	}
-	if !strings.Contains(stderr, "unknown flag") {
+	if !strings.Contains(stderr, "Unknown flag") {
 		t.Errorf("stderr = %q, want it to mention the unknown flag", stderr)
 	}
 }
@@ -211,7 +216,7 @@ func TestRun_NoArgs_ShowsHelpOnStdout(t *testing.T) {
 	if stderr != "" {
 		t.Errorf("stderr = %q, want empty", stderr)
 	}
-	if !strings.Contains(stdout, "Usage:") {
-		t.Errorf("stdout = %q, want help output (containing %q)", stdout, "Usage:")
+	if !strings.Contains(stdout, "USAGE") {
+		t.Errorf("stdout = %q, want help output (containing %q)", stdout, "USAGE")
 	}
 }
