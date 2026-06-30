@@ -109,13 +109,21 @@ checksums, GitHub Releases, `go install`, Homebrew tap, cosign + SBOM) that ship
 with every scaffolded project.
 
 Not yet built (tracked as issues): the agent **Skill** (`SKILL.md`) that wraps
-the scaffold, optional [fang](https://github.com/charmbracelet/fang) styling,
-per-subcommand man pages, and community health files. (Shell completions already
-come free from cobra's built-in `completion` command; the pending work adds man
-pages and polish.) This project uses
+the scaffold, optional [fang](https://github.com/charmbracelet/fang) styling, and
+per-subcommand man pages. (Shell completions already come free from cobra's
+built-in `completion` command; the pending work adds man pages and polish.) This
+project uses
 **[beads](https://github.com/gastownhall/beads)** for issue tracking — run
 `bd ready` to see what's next.
 
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) (note: work is tracked with `bd`, not
+GitHub issues) and the [Code of Conduct](CODE_OF_CONDUCT.md). Report security
+issues per [SECURITY.md](SECURITY.md). The Template carries its own community
+files (`template/LICENSE`, `README`, `CONTRIBUTING`, …), so scaffolded projects
+are OSS-ready from the first commit.
+
 ## License
 
-Intended to ship under the MIT License (community files are a pending task).
+[MIT](LICENSE) © Nick Moignard
