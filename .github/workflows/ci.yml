@@ -24,8 +24,8 @@ jobs:
         # latest + previous Go (asymmetric matrix: full tests run on Linux only).
         go: [stable, oldstable]
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-go@v5
+      - uses: actions/checkout@v7
+      - uses: actions/setup-go@v6
         with:
           go-version: ${{ matrix.go }}
       - name: gofmt
@@ -52,8 +52,8 @@ jobs:
         # Build-smoke only on the other platforms; the test job covers Linux.
         os: [macos-latest, windows-latest]
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-go@v5
+      - uses: actions/checkout@v7
+      - uses: actions/setup-go@v6
         with:
           go-version: stable
       - name: build
@@ -73,11 +73,11 @@ jobs:
       matrix:
         module: [".", "template", "examples/yaml-validator"]
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-go@v5
+      - uses: actions/checkout@v7
+      - uses: actions/setup-go@v6
         with:
           go-version: stable
-      - uses: golangci/golangci-lint-action@v7
+      - uses: golangci/golangci-lint-action@v9
         with:
           version: v2.11.4
           working-directory: ${{ matrix.module }}
@@ -90,8 +90,8 @@ jobs:
       matrix:
         module: [".", "template", "examples/yaml-validator"]
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-go@v5
+      - uses: actions/checkout@v7
+      - uses: actions/setup-go@v6
         with:
           go-version: stable
       - name: govulncheck
@@ -107,8 +107,8 @@ jobs:
     name: example-drift
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-go@v5
+      - uses: actions/checkout@v7
+      - uses: actions/setup-go@v6
         with:
           go-version: stable
       - name: check example drift
