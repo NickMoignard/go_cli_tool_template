@@ -3,4 +3,4 @@
 // example in ./examples/yaml-validator (its own module). See ADR-0001.
 module github.com/NickMoignard/go_cli_tool_template
 
-go 1.25
+go 1.25.0
